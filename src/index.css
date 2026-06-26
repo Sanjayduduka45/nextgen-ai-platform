@@ -1,111 +1,1003 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+@import "tailwindcss";
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+/* ═══════════════════════════════════════════════════════════════════════════
+ *  DESIGN SYSTEM — Single Source of Truth
+ *
+ *  Principles applied:
+ *  ─ Norman: Affordance, Signifiers, Feedback, Constraints, Consistency
+ *  ─ Shneiderman: Consistency, Informative Feedback, Reduce Memory Load
+ *  ─ Fitts' Law: Generous touch targets (min 44px), proximity grouping
+ *  ─ Hick's Law: Limit options per context, clear visual hierarchy
+ *  ─ Recognition > Recall: Visible labels, consistent patterns
+ *  ─ Cognitive Load: Progressive disclosure, whitespace, rhythm
+ *
+ *  Font Stack:
+ *    Headings → JetBrains Mono (monospaced, technical authority)
+ *    Body     → Inter (high-legibility, variable-weight sans-serif)
+ *
+ *  Spacing: 8-point grid (all spacing derives from multiples of 8px)
+ *  Theme: Light only — no dark mode tokens
+ * ═══════════════════════════════════════════════════════════════════════════ */
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+/* ────────────────────────────────────────────────────────────────────────────
+ *  1. DESIGN TOKENS  (Tailwind v4 @theme)
+ *     These become Tailwind utility classes automatically.
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+
+  /* ── 1a. Typography ─────────────────────────────────────────────────────── */
+
+  --font-heading: 'JetBrains Mono', ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  --font-body: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Font sizes — modular scale (1.250 ratio, base 16px) */
+  --text-xs:   0.75rem;    /* 12px */
+  --text-sm:   0.875rem;   /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-md:   1.125rem;   /* 18px */
+  --text-lg:   1.25rem;    /* 20px */
+  --text-xl:   1.5rem;     /* 24px */
+  --text-2xl:  1.875rem;   /* 30px */
+  --text-3xl:  2.25rem;    /* 36px */
+  --text-4xl:  3rem;       /* 48px */
+  --text-5xl:  3.75rem;    /* 60px */
+
+  /* Line heights */
+  --leading-none:    1;
+  --leading-tight:   1.2;
+  --leading-snug:    1.35;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose:   1.8;
+
+  /* Letter spacing */
+  --tracking-tighter: -0.04em;
+  --tracking-tight:   -0.02em;
+  --tracking-normal:  0em;
+  --tracking-wide:    0.025em;
+  --tracking-wider:   0.05em;
+  --tracking-widest:  0.1em;
+
+
+  /* ── 1b. Color Palette ──────────────────────────────────────────────────── */
+
+  /* Primary — Indigo (trust, professionalism, technology) */
+  --color-primary-50:  #EEF2FF;
+  --color-primary-100: #E0E7FF;
+  --color-primary-200: #C7D2FE;
+  --color-primary-300: #A5B4FC;
+  --color-primary-400: #818CF8;
+  --color-primary-500: #6366F1;
+  --color-primary-600: #4F46E5;
+  --color-primary-700: #4338CA;
+  --color-primary-800: #3730A3;
+  --color-primary-900: #312E81;
+
+  /* Neutral — Cool gray */
+  --color-neutral-50:  #F9FAFB;
+  --color-neutral-100: #F3F4F6;
+  --color-neutral-200: #E5E7EB;
+  --color-neutral-300: #D1D5DB;
+  --color-neutral-400: #9CA3AF;
+  --color-neutral-500: #6B7280;
+  --color-neutral-600: #4B5563;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1F2937;
+  --color-neutral-900: #111827;
+  --color-neutral-950: #030712;
+
+  /* Semantic colors */
+  --color-success-50:  #F0FDF4;
+  --color-success-500: #22C55E;
+  --color-success-700: #15803D;
+
+  --color-warning-50:  #FFFBEB;
+  --color-warning-500: #F59E0B;
+  --color-warning-700: #B45309;
+
+  --color-error-50:  #FEF2F2;
+  --color-error-500: #EF4444;
+  --color-error-700: #B91C1C;
+
+  --color-accent-50:  #ECFEFF;
+  --color-accent-500: #06B6D4;
+  --color-accent-700: #0E7490;
+
+  /* Surface & Background (light theme only) */
+  --color-surface:          #FFFFFF;
+  --color-surface-alt:      #F9FAFB;
+  --color-surface-elevated: #FFFFFF;
+  --color-surface-inset:    #F3F4F6;
+  --color-border:           #E5E7EB;
+  --color-border-strong:    #D1D5DB;
+
+
+  /* ── 1c. 8-Point Spacing System ─────────────────────────────────────────── */
+
+  --spacing-0:   0px;
+  --spacing-1:   4px;     /* half-step for fine-tuning */
+  --spacing-2:   8px;     /* base unit */
+  --spacing-3:   12px;
+  --spacing-4:   16px;
+  --spacing-5:   20px;
+  --spacing-6:   24px;
+  --spacing-8:   32px;
+  --spacing-10:  40px;
+  --spacing-12:  48px;
+  --spacing-16:  64px;
+  --spacing-20:  80px;
+  --spacing-24:  96px;
+  --spacing-32:  128px;
+  --spacing-40:  160px;
+  --spacing-48:  192px;
+
+
+  /* ── 1d. Shadows (elevation system) ─────────────────────────────────────── */
+
+  --shadow-xs:  0 1px 2px 0 rgb(0 0 0 / 0.04);
+  --shadow-sm:  0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  --shadow-md:  0 4px 6px -1px rgb(0 0 0 / 0.06), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+  --shadow-lg:  0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+  --shadow-xl:  0 20px 25px -5px rgb(0 0 0 / 0.07), 0 8px 10px -6px rgb(0 0 0 / 0.03);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+
+  /* Card-specific shadow */
+  --shadow-card:       0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.03);
+  --shadow-card-hover: 0 10px 20px -5px rgb(0 0 0 / 0.08), 0 4px 8px -4px rgb(0 0 0 / 0.04);
+
+
+  /* ── 1e. Border Radius ──────────────────────────────────────────────────── */
+
+  --radius-none: 0px;
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  20px;
+  --radius-3xl:  24px;
+  --radius-full: 9999px;
+
+  /* Semantic radius */
+  --radius-button: 12px;
+  --radius-card:   16px;
+  --radius-badge:  9999px;
+  --radius-input:  8px;
+
+
+  /* ── 1f. Transitions & Animation ────────────────────────────────────────── */
+
+  --duration-instant: 0ms;
+  --duration-fast:    100ms;
+  --duration-hover:   150ms;   /* hover feedback — snappy, immediate */
+  --duration-base:    200ms;
+  --duration-layout:  300ms;   /* layout shifts — smooth, perceptible */
+  --duration-slow:    500ms;
+  --duration-enter:   400ms;   /* entrance animations */
+
+  --ease-default:    cubic-bezier(0.4, 0, 0.2, 1);    /* ease-in-out */
+  --ease-in:         cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:        cubic-bezier(0, 0, 0.2, 1);
+  --ease-bounce:     cubic-bezier(0.34, 1.56, 0.64, 1);
+
+
+  /* ── 1g. Z-Index Scale ──────────────────────────────────────────────────── */
+
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 20;
+  --z-sticky:   30;
+  --z-overlay:  40;
+  --z-modal:    50;
+  --z-toast:    60;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
+/* ────────────────────────────────────────────────────────────────────────────
+ *  2. CSS RESET & BASE STYLES
+ *     Normalize cross-browser rendering, establish defaults.
+ * ──────────────────────────────────────────────────────────────────────────── */
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  font-size: 16px;                  /* 1rem anchor */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: var(--leading-normal);
+  color: var(--color-neutral-900);
+  background-color: var(--color-surface);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+/* Headings: JetBrains Mono, tighter tracking */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-neutral-900);
+  text-wrap: balance;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
+h1 { font-size: var(--text-5xl); font-weight: 800; letter-spacing: var(--tracking-tighter); }
+h2 { font-size: var(--text-4xl); }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl); }
+h5 { font-size: var(--text-lg); font-weight: 600; }
+h6 { font-size: var(--text-md); font-weight: 600; }
+
+/* Paragraphs */
 p {
+  line-height: var(--leading-relaxed);
+  color: var(--color-neutral-600);
+  text-wrap: pretty;
+}
+
+/* Media */
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Links */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--duration-hover) var(--ease-default);
+}
+
+/* Buttons — reset browser defaults */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Lists */
+ul, ol {
+  list-style: none;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Form elements */
+input, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Remove default spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+/* Smooth scroll for reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+
+/* ────────────────────────────────────────────────────────────────────────────
+ *  3. ACCESSIBILITY
+ *     Focus management, skip links, screen-reader utilities.
+ *
+ *     Norman: Signifiers (visible focus rings signal interactivity)
+ *     Shneiderman: Informative feedback (clear focus indication)
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+/* Focus ring — only on keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
 }
+
+/* Remove focus ring for mouse clicks */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Skip-to-content link (offscreen until focused) */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: var(--z-toast);
+  padding: var(--spacing-3) var(--spacing-6);
+  background-color: var(--color-primary-600);
+  color: white;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  border-radius: 0 0 var(--radius-md) 0;
+  transition: left var(--duration-hover) var(--ease-default);
+}
+
+.skip-to-content:focus {
+  left: 0;
+}
+
+/* Screen-reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+
+/* ────────────────────────────────────────────────────────────────────────────
+ *  4. BUTTON SYSTEM
+ *     Three tiers: Primary → Secondary → Ghost
+ *
+ *     Fitts' Law: Minimum 44px touch target height
+ *     Norman: Affordance (buttons look pressable), Feedback (hover/active)
+ *     Hick's Law: Max 2 CTAs per viewport section
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+/* Shared button base */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  border-radius: var(--radius-button);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--duration-hover) var(--ease-default),
+    color var(--duration-hover) var(--ease-default),
+    border-color var(--duration-hover) var(--ease-default),
+    box-shadow var(--duration-hover) var(--ease-default),
+    transform var(--duration-hover) var(--ease-default),
+    opacity var(--duration-hover) var(--ease-default);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Button sizes — Fitts' Law: min 44px height */
+.btn-sm {
+  height: 36px;
+  padding: 0 var(--spacing-4);
+  font-size: var(--text-sm);
+}
+
+.btn-md {
+  height: 44px;
+  padding: 0 var(--spacing-6);
+  font-size: var(--text-base);
+}
+
+.btn-lg {
+  height: 52px;
+  padding: 0 var(--spacing-8);
+  font-size: var(--text-md);
+}
+
+/* Primary button — highest visual weight */
+.btn-primary {
+  background-color: var(--color-primary-600);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-700);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:active {
+  background-color: var(--color-primary-800);
+  box-shadow: var(--shadow-xs);
+}
+
+/* Secondary button — outlined, lower weight */
+.btn-secondary {
+  background-color: var(--color-surface);
+  color: var(--color-primary-600);
+  border: 2px solid var(--color-primary-200);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-primary-400);
+  background-color: var(--color-primary-50);
+}
+
+.btn-secondary:active {
+  border-color: var(--color-primary-500);
+  background-color: var(--color-primary-100);
+}
+
+/* Ghost button — minimal, text-only */
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-neutral-700);
+}
+
+.btn-ghost:hover {
+  background-color: var(--color-neutral-100);
+  color: var(--color-primary-600);
+}
+
+.btn-ghost:active {
+  background-color: var(--color-neutral-200);
+  color: var(--color-primary-700);
+}
+
+
+/* ────────────────────────────────────────────────────────────────────────────
+ *  5. CARD SYSTEM
+ *     Consistent elevation, radius, and hover behavior.
+ *
+ *     Norman: Consistency (all cards behave identically)
+ *     Feedback: Hover state signals interactivity
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: var(--spacing-8);
+  transition:
+    box-shadow var(--duration-hover) var(--ease-default),
+    border-color var(--duration-hover) var(--ease-default),
+    transform var(--duration-layout) var(--ease-default);
+}
+
+.card:hover,
+.card-interactive:hover {
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--color-primary-200);
+}
+
+.card-interactive:hover {
+  transform: translateY(-4px) scale(1.01);
+}
+
+/* Card with highlighted / selected state */
+.card-highlighted {
+  border-color: var(--color-primary-500);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--color-primary-500);
+}
+
+
+/* ────────────────────────────────────────────────────────────────────────────
+ *  6. TYPOGRAPHY UTILITIES
+ *     Pre-composed heading + body styles for quick application.
+ *
+ *     Recognition > Recall: Consistent heading sizes across all pages
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+/* Display — for hero headlines */
+.text-display {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: 800;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tighter);
+  color: var(--color-neutral-900);
+}
+
+@media (min-width: 640px) {
+  .text-display { font-size: var(--text-5xl); }
+}
+
+/* Section title */
+.text-section-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-neutral-900);
+}
+
+@media (min-width: 640px) {
+  .text-section-title { font-size: var(--text-4xl); }
+}
+
+/* Card title */
+.text-card-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: var(--leading-snug);
+  color: var(--color-neutral-900);
+}
+
+/* Subtitle / supporting text */
+.text-subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  line-height: var(--leading-relaxed);
+  color: var(--color-neutral-500);
+}
+
+@media (min-width: 640px) {
+  .text-subtitle { font-size: var(--text-xl); }
+}
+
+/* Body text */
+.text-body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: var(--leading-relaxed);
+  color: var(--color-neutral-600);
+}
+
+/* Small / caption text */
+.text-caption {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  line-height: var(--leading-normal);
+  color: var(--color-neutral-500);
+}
+
+/* Overline — small uppercase label */
+.text-overline {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--color-primary-600);
+}
+
+
+/* ────────────────────────────────────────────────────────────────────────────
+ *  7. LAYOUT UTILITIES
+ *     Container, section spacing, grid helpers.
+ *
+ *     8-point grid: All vertical rhythm uses multiples of 8px.
+ *     Cognitive Load: Generous whitespace reduces visual noise.
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+/* Container — max-width with responsive padding */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--spacing-4);    /* 16px mobile */
+  padding-right: var(--spacing-4);
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: var(--spacing-6);    /* 24px tablet */
+    padding-right: var(--spacing-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: var(--spacing-8);    /* 32px desktop */
+    padding-right: var(--spacing-8);
+  }
+}
+
+/* Section vertical spacing — 8-point grid */
+.section-padding {
+  padding-top: var(--spacing-16);       /* 64px mobile */
+  padding-bottom: var(--spacing-16);
+}
+
+@media (min-width: 640px) {
+  .section-padding {
+    padding-top: var(--spacing-20);     /* 80px tablet */
+    padding-bottom: var(--spacing-20);
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-top: var(--spacing-24);     /* 96px desktop */
+    padding-bottom: var(--spacing-24);
+  }
+}
+
+
+/* ────────────────────────────────────────────────────────────────────────────
+ *  8. BADGE / TAG SYSTEM
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-1) var(--spacing-3);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  border-radius: var(--radius-badge);
+  white-space: nowrap;
+}
+
+.badge-primary {
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-700);
+}
+
+.badge-neutral {
+  background-color: var(--color-neutral-100);
+  color: var(--color-neutral-700);
+}
+
+.badge-success {
+  background-color: var(--color-success-50);
+  color: var(--color-success-700);
+}
+
+
+/* ────────────────────────────────────────────────────────────────────────────
+ *  9. TRANSITION & ANIMATION UTILITIES
+ *     All animation uses native CSS transitions.
+ *     150ms for hover feedback, 300ms for layout shifts.
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+/* Hover transition — 150ms (immediate feedback per Norman) */
+.transition-hover {
+  transition-property: color, background-color, border-color, box-shadow, opacity;
+  transition-duration: var(--duration-hover);
+  transition-timing-function: var(--ease-default);
+}
+
+/* Layout transition — 300ms (smooth rearrangement) */
+.transition-layout {
+  transition-property: transform, width, height, padding, margin;
+  transition-duration: var(--duration-layout);
+  transition-timing-function: var(--ease-default);
+}
+
+/* All properties transition */
+.transition-all {
+  transition-property: all;
+  transition-duration: var(--duration-hover);
+  transition-timing-function: var(--ease-default);
+}
+
+/* Scroll-triggered entrance animations (used with IntersectionObserver) */
+.animate-fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--duration-enter) var(--ease-out),
+    transform var(--duration-enter) var(--ease-out);
+}
+
+.animate-fade-in.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animate-fade-in-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity var(--duration-enter) var(--ease-out),
+    transform var(--duration-enter) var(--ease-out);
+}
+
+.animate-fade-in-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered children — apply delay per item */
+.stagger-1 { transition-delay: 50ms; }
+.stagger-2 { transition-delay: 100ms; }
+.stagger-3 { transition-delay: 150ms; }
+.stagger-4 { transition-delay: 200ms; }
+.stagger-5 { transition-delay: 250ms; }
+.stagger-6 { transition-delay: 300ms; }
+
+/* Spinner (for loading states) */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Accordion collapse/expand styling (CSS Grid technique) */
+.accordion-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-layout) var(--ease-default);
+  overflow: hidden;
+}
+
+.accordion-wrapper.is-open {
+  grid-template-rows: 1fr;
+}
+
+.accordion-content {
+  min-height: 0;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 250ms var(--ease-default),
+    transform 250ms var(--ease-default);
+}
+
+.accordion-wrapper.is-open .accordion-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Force expanded layout on tablets & desktops */
+@media (min-width: 768px) {
+  .accordion-wrapper {
+    grid-template-rows: 1fr !important;
+    overflow: visible;
+  }
+  .accordion-content {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: none !important;
+  }
+}
+
+
+/* ────────────────────────────────────────────────────────────────────────────
+ *  10. DIVIDER & DECORATION
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-border);
+  border: none;
+}
+
+.divider-strong {
+  background-color: var(--color-border-strong);
+}
+
+/* Decorative gradient dot pattern — used as section backgrounds */
+.bg-dots {
+  background-image: radial-gradient(var(--color-neutral-200) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Subtle gradient overlays */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-surface) 100%);
+}
+
+.bg-gradient-hero {
+  background: linear-gradient(
+    180deg,
+    var(--color-primary-50) 0%,
+    var(--color-surface) 60%,
+    var(--color-surface) 100%
+  );
+}
+
+
+
+/* ────────────────────────────────────────────────────────────────────────────
+ *  10a. HERO-SPECIFIC PREMIUM EFFECTS & ANIMATIONS
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+@keyframes drift-slow {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes drift-fast {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-40px, 40px) scale(0.9); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.animate-drift-1 {
+  animation: drift-slow 15s infinite ease-in-out;
+}
+
+.animate-drift-2 {
+  animation: drift-fast 12s infinite ease-in-out;
+}
+
+@keyframes float-slow {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes float-medium {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(-3deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.animate-float-slow {
+  animation: float-slow 8s infinite ease-in-out;
+}
+
+.animate-float-medium {
+  animation: float-medium 6s infinite ease-in-out;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Fade-in sequence for terminal mock lines */
+@keyframes line-type {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-line-1 { animation: line-type 0.5s ease-out forwards; animation-delay: 0.2s; opacity: 0; }
+.animate-line-2 { animation: line-type 0.5s ease-out forwards; animation-delay: 1.2s; opacity: 0; }
+.animate-line-3 { animation: line-type 0.5s ease-out forwards; animation-delay: 2.2s; opacity: 0; }
+.animate-line-4 { animation: line-type 0.5s ease-out forwards; animation-delay: 3.2s; opacity: 0; }
+.animate-line-5 { animation: line-type 0.5s ease-out forwards; animation-delay: 4.2s; opacity: 0; }
+.animate-line-6 { animation: line-type 0.5s ease-out forwards; animation-delay: 5.2s; opacity: 0; }
+.animate-line-7 { animation: line-type 0.5s ease-out forwards; animation-delay: 6.2s; opacity: 0; }
+.animate-line-8 { animation: line-type 0.5s ease-out forwards; animation-delay: 7.2s; opacity: 0; }
+
+/* Premium border beam animation (glowing edge for code editor/terminal) */
+@keyframes border-beam {
+  0% { border-color: var(--color-border); }
+  50% { border-color: var(--color-primary-300); }
+  100% { border-color: var(--color-border); }
+}
+
+.animate-border-beam {
+  animation: border-beam 6s infinite ease-in-out;
+}
+
+/* Pricing numbers swap animation */
+@keyframes price-swap {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-price-swap {
+  animation: price-swap var(--duration-hover) var(--ease-default) forwards;
+}
+
+/* Infinite Marquee animations and classes */
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    white 10%,
+    white 90%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    white 10%,
+    white 90%,
+    transparent
+  );
+}
+
+.marquee-track {
+  display: flex;
+  gap: var(--spacing-6); /* 24px */
+  width: max-content;
+  animation: marquee-scroll 45s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    gap: var(--spacing-4);
+  }
+  .marquee-container {
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+    overflow: visible;
+  }
+}
+
+
+/* ────────────────────────────────────────────────────────────────────────────
+ *  11. RESPONSIVE BREAKPOINT REFERENCE
+ *
+ *  All styles are mobile-first. Use min-width media queries:
+ *
+ *    sm:  640px   — Large phones, landscape
+ *    md:  768px   — Tablets
+ *    lg:  1024px  — Small laptops
+ *    xl:  1280px  — Desktops
+ *    2xl: 1536px  — Large desktops
+ *
+ *  Tailwind v4 provides these breakpoints by default.
+ *  Custom utilities above already use them.
+ * ──────────────────────────────────────────────────────────────────────────── */

@@ -1,122 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+/**
+ * App — Root application component.
+ *
+ * Composes all layout and feature sections into a single-page layout.
+ * Each section is lazy-loaded where appropriate for performance.
+ */
 
-function App() {
-  const [count, setCount] = useState(0)
+import { lazy, Suspense } from 'react'
+import { Header, Footer } from '@/components/layout'
+import { Hero } from '@/features/hero'
 
+// Lazy-loaded sections (below the fold)
+const Features = lazy(() =>
+  import('@/features/features').then((m) => ({ default: m.Features }))
+)
+const Pricing = lazy(() =>
+  import('@/features/pricing').then((m) => ({ default: m.Pricing }))
+)
+const Testimonials = lazy(() =>
+  import('@/features/testimonials').then((m) => ({ default: m.Testimonials }))
+)
+const CTA = lazy(() =>
+  import('@/features/cta').then((m) => ({ default: m.CTA }))
+)
+
+/** Minimal loading fallback — no layout shift */
+function SectionFallback() {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+    <div
+      className="flex items-center justify-center py-20"
+      role="status"
+      aria-label="Loading section"
+    >
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-200 border-t-primary-600" />
+      <span className="sr-only">Loading…</span>
+    </div>
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Header />
+
+      <main id="main-content" role="main" className="flex-1">
+        {/* Hero is eagerly loaded — above the fold */}
+        <Hero />
+
+        {/* Below-the-fold sections — lazy loaded */}
+        <Suspense fallback={<SectionFallback />}>
+          <Features />
+        </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
+          <Pricing />
+        </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
+          <Testimonials />
+        </Suspense>
+
+        <Suspense fallback={<SectionFallback />}>
+          <CTA />
+        </Suspense>
+      </main>
+
+      <Footer />
+    </div>
+  )
+}
